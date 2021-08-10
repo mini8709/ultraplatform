@@ -35,6 +35,7 @@ public abstract class Product {
     private String name;
     private int stockQuantity;
     private int price;
+    private String info;
 
     @OneToMany(mappedBy = "product")
     private List<ProductCategory> productCategoryList = new ArrayList<>();
