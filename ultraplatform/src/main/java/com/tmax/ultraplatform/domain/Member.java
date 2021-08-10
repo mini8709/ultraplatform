@@ -1,6 +1,7 @@
 package com.tmax.ultraplatform.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tmax.ultraplatform.domain.product.Product;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class Member {
     @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Product> productList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Orders> ordersList = new ArrayList<>();
 
 
 }
