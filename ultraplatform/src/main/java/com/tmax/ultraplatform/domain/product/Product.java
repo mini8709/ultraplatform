@@ -44,5 +44,4 @@ public abstract class Product {
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
 
-
 }
