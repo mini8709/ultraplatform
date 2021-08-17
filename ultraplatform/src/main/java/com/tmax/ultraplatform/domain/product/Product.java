@@ -35,6 +35,8 @@ public abstract class Product {
     private String name;
     private int stockQuantity;
     private int price;
+    private String info;
+    private String imageURL;
 
     @OneToMany(mappedBy = "product")
     private List<ProductCategory> productCategoryList = new ArrayList<>();
@@ -42,6 +44,5 @@ public abstract class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
-
 
 }
