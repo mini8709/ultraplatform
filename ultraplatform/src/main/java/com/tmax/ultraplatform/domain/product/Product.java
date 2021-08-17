@@ -36,6 +36,7 @@ public abstract class Product {
     private int stockQuantity;
     private int price;
     private String info;
+    private String imageURL;
 
     @OneToMany(mappedBy = "product")
     private List<ProductCategory> productCategoryList = new ArrayList<>();
