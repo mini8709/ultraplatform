@@ -10,15 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Product> findProducts() {
-        return productRepository.findAll();}
+    public void addProduct(Product product){
+        productRepository.save(product);
+    }
 
-    public List<Product> findProductsByCategory(String category) {
-        return productRepository.findByCategory(category);}
-
+    public void updateProduct(Long id,Product param){
+        Product product = productRepository.getById(id);
+        product.updateProduct(param);
+    }
 }

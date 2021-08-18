@@ -49,13 +49,6 @@ public abstract class Product {
     //비즈니스 로직
 
     /*
-     * 재고 수량 증가
-     */
-    public void addStock(int quantity){
-        this.stockQuantity += quantity;
-    }
-
-    /*
      * 재고 수량 감소
      */
     public void minusStock(int quantity){
@@ -66,6 +59,18 @@ public abstract class Product {
             throw new NotEnoughStockException("재고 수량이 부족합니다.");
         }
         this.stockQuantity = restStock;
+    }
+
+    public void addStock(int stockQuantity){
+        this.stockQuantity += stockQuantity;
+    }
+
+    public void updateProduct(Product product){
+        this.name = product.name;
+        this.stockQuantity = product.stockQuantity;
+        this.price = product.price;
+        this.info = product.info;
+        this.imageURL = product.imageURL;
     }
 
 }
