@@ -39,4 +39,14 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class).getResultList();
 
     }
+
+    /*
+     * 사용자 이름으로 검색 (회원 가입 시 중복 검사 필요)
+     */
+    public List<Member> findByName(String name){
+
+        return em.createQuery("select m from Member m where m.name = :name", Member.class)
+                .setParameter("name", name).getResultList();
+    }
+
 }

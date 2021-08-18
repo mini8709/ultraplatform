@@ -24,4 +24,6 @@ public class OrdersProduct {
 
     private int count;
     private int price;
+
+    //
 }
