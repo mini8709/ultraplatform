@@ -68,4 +68,12 @@ public abstract class Product {
         this.stockQuantity = restStock;
     }
 
+    public void updateProduct(Product product){
+        this.name = product.name;
+        this.stockQuantity = product.stockQuantity;
+        this.price = product.price;
+        this.info = product.info;
+        this.imageURL = product.imageURL;
+    }
+
 }
