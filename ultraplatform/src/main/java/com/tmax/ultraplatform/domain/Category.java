@@ -29,4 +29,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<ProductCategory> productCategoryList = new ArrayList<>();
 
+
+
 }

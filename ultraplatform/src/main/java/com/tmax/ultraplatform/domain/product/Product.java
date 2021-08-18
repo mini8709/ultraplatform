@@ -45,4 +45,20 @@ public abstract class Product {
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
 
+
+    /*
+    *  비즈니스 로직
+    * */
+    public void addStock(int stockQuantity){
+        this.stockQuantity += stockQuantity;}
+
+    public void updateProduct(Product product){
+        this.name = product.name;
+        this.stockQuantity = product.stockQuantity;
+        this.price = product.price;
+        this.info = product.info;
+        this.imageURL = product.imageURL;
+    }
+
+
 }
