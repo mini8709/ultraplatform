@@ -6,6 +6,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
-    List<Product> findByCategory(String category);
+//spring data jpa repo + querydsl custom repo
+public interface ProductRepository extends JpaRepository<Product,Long>, ProductRepositoryCustom {
 }
