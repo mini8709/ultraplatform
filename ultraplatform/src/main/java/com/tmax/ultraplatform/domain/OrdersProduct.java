@@ -2,11 +2,12 @@ package com.tmax.ultraplatform.domain;
 
 import com.tmax.ultraplatform.domain.product.Product;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 public class OrdersProduct {
 
     @Id
@@ -25,5 +26,16 @@ public class OrdersProduct {
     private int count;
     private int price;
 
-    //
+    //생성 메서드
+    public static OrdersProduct createOrdersProduct(Product product, int price, int count){
+        OrdersProduct ordersProduct = new OrdersProduct();
+
+        ordersProduct.setProduct(product);
+        ordersProduct.setPrice(price);
+        ordersProduct.setCount(count);
+
+        product.minusStock(count);
+
+        return ordersProduct;
+    }
 }

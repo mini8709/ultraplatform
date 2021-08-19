@@ -1,4 +1,4 @@
-package com.tmax.ultraplatform.service;
+package com.tmax.ultraplatform.service.commandservice;
 
 import com.tmax.ultraplatform.domain.Member;
 import com.tmax.ultraplatform.repository.MemberRepository;
@@ -9,9 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberCommandService {
 
     private final MemberRepository memberRepository;
 
@@ -32,16 +31,6 @@ public class MemberService {
         memberRepository.join(member);
 
         return member.getId();
-    }
-
-    /*
-     * 회원의 보유 금액 조회
-     */
-    public int findMoney(Long id){
-
-        Member findMember = memberRepository.findOne(id);
-
-        return findMember.getMoney();
     }
 
     /*
@@ -70,17 +59,6 @@ public class MemberService {
 
         List<Member> findMember = memberRepository.findByName(member.getName());
 
-<<<<<<< HEAD
         return !findMember.isEmpty();
-=======
-        if(findMember.isEmpty()){
-
-            return false;
-
-        } else{
-
-            return true;
-        }
->>>>>>> 482478b43e806c8128a2dab4dbbf18cf432bdc1b
     }
 }

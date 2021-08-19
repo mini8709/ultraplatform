@@ -5,6 +5,7 @@ import com.tmax.ultraplatform.domain.Basket;
 import com.tmax.ultraplatform.domain.Member;
 import com.tmax.ultraplatform.domain.OrdersProduct;
 import com.tmax.ultraplatform.domain.ProductCategory;
+import com.tmax.ultraplatform.exception.NotEnoughStockException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -44,5 +45,27 @@ public abstract class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
+
+    //비즈니스 로직
+
+    /*
+     * 재고 수량 증가
+     */
+    public void addStock(int quantity){
+        this.stockQuantity += quantity;
+    }
+
+    /*
+     * 재고 수량 감소
+     */
+    public void minusStock(int quantity){
+
+        int restStock = this.stockQuantity - quantity;
+
+        if(restStock < 0){
+            throw new NotEnoughStockException("재고 수량이 부족합니다.");
+        }
+        this.stockQuantity = restStock;
+    }
 
 }

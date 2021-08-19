@@ -26,7 +26,7 @@ public class OrdersRepository {
     }
 
     public List<Orders> findOrdersByMember(Long id){
-        
+
         return em.createQuery("select o from orders o where o.member_id = :id", Orders.class)
                 .setParameter("id", id).getResultList();
 
