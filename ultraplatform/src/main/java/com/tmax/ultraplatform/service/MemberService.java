@@ -70,6 +70,17 @@ public class MemberService {
 
         List<Member> findMember = memberRepository.findByName(member.getName());
 
+<<<<<<< HEAD
         return !findMember.isEmpty();
+=======
+        if(findMember.isEmpty()){
+
+            return false;
+
+        } else{
+
+            return true;
+        }
+>>>>>>> 482478b43e806c8128a2dab4dbbf18cf432bdc1b
     }
 }
