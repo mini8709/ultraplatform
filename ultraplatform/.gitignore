@@ -26,6 +26,9 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
+###querydsl###
+generated
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
