@@ -46,6 +46,16 @@ public class Member {
     private List<Orders> ordersList = new ArrayList<>();
 
 
+    // ** 생성 로직 ** //
+    public void setMembers(String userId, String password, String name, Address address, MemberType type, int money){
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.type = type;
+        this.money = money;
+    }
+
     // ** 비즈니스 로직 ** //
 
     /*

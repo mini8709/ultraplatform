@@ -45,6 +45,8 @@ public class OrdersCommandService {
 
         Orders orders = Orders.createOrders(findMember, ordersProductList);
 
+        ordersRepository.save(orders);
+
     }
 
 }
