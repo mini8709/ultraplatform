@@ -45,7 +45,7 @@ public abstract class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
-
+    
     //비즈니스 로직
 
     /*
