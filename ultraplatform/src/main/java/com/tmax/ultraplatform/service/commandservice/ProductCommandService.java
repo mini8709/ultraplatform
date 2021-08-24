@@ -17,6 +17,7 @@ public class ProductCommandService {
     public void addProduct(Product product){
         productRepository.save(product);
     }
+
     //Update, product-category update 추가 필요
     public void updateProduct(Long id,Product param){
         Product product = productRepository.getById(id);
