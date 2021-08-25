@@ -15,7 +15,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     private final EntityManager em;
     private final JPAQueryFactory query = new JPAQueryFactory(em);
-
     private final QProduct product = QProduct.product;
     private final QProductCategory productCategory = QProductCategory.productCategory;
 

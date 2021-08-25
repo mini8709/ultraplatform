@@ -45,15 +45,8 @@ public abstract class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
-
+    
     //비즈니스 로직
-
-    /*
-     * 재고 수량 증가
-     */
-    public void addStock(int quantity){
-        this.stockQuantity += quantity;
-    }
 
     /*
      * 재고 수량 감소
@@ -66,6 +59,11 @@ public abstract class Product {
             throw new NotEnoughStockException("재고 수량이 부족합니다.");
         }
         this.stockQuantity = restStock;
+    }
+
+
+    public void addStock(int stockQuantity){
+        this.stockQuantity += stockQuantity;
     }
 
     public void updateProduct(Product product){

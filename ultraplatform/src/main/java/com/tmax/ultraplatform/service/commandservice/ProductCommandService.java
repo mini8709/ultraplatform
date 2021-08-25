@@ -13,7 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductCommandService {
     private final ProductRepository productRepository;
-    //Insert , product-category insert 추가 필요
+
+   //Insert , product-category insert 추가 필요
     public void addProduct(Product product){
         productRepository.save(product);
     }
