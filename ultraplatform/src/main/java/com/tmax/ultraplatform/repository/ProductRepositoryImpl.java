@@ -5,26 +5,33 @@ import com.tmax.ultraplatform.domain.QProductCategory;
 import com.tmax.ultraplatform.domain.product.Product;
 import com.tmax.ultraplatform.domain.product.QProduct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-//사용자 정의 리포지토리 구현체
-@RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepositoryCustom {
+import static com.tmax.ultraplatform.domain.QProductCategory.*;
+import static com.tmax.ultraplatform.domain.product.QProduct.*;
 
-    private final EntityManager em;
-    private final JPAQueryFactory query = new JPAQueryFactory(em);
-    private final QProduct product = QProduct.product;
-    private final QProductCategory productCategory = QProductCategory.productCategory;
+//사용자 정의 리포지토리 구현체
+
+public class ProductRepositoryImpl implements ProductRepositoryCustom
+{
+
+    private final JPAQueryFactory query;
+    public ProductRepositoryImpl(EntityManager em){
+        this.query = new JPAQueryFactory(em);
+    }
 
     @Override
-    public List<Product> findAllWithCategory(int offset, int limit){
+    public List<Product> findAllWithCategory(Pageable pageable){
         return query.select(product)
-                .from(product)
-                .join(product.productCategoryList, productCategory)
-                .limit(limit)
-                .offset(offset)
+                .from(product).distinct()
+                .join(product.productCategoryList, productCategory).fetchJoin()
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
                 .fetch();
 //        return em.createQuery(
 //                "select p from Product p" +
@@ -36,21 +43,27 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Override
     public List<Product> findByIds(List<Long> ids) {
+        QProduct product = QProduct.product;
+        QProductCategory productCategory = QProductCategory.productCategory;
+
         return query.select(product)
-                .from(product)
-                .join(product.productCategoryList, productCategory)
+                .from(product).distinct()
+                .join(product.productCategoryList, productCategory).fetchJoin()
                 .where(product.id.in(ids))
                 .fetch();
     }
 
     @Override
-    public List<Product> findByCategory(Long categoryId,int offset, int limit) {
+    public List<Product> findByCategory(Long categoryId, Pageable pageable) {
+        QProduct product = QProduct.product;
+        QProductCategory productCategory = QProductCategory.productCategory;
+
         return query.select(product)
-                .from(product)
-                .leftJoin(product.productCategoryList, productCategory)
+                .from(product).distinct()
+                .innerJoin(product.productCategoryList, productCategory)
                 .on(productCategory.category.id.eq(categoryId))
-                .limit(limit)
-                .offset(offset)
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
                 .fetch();
     }
 }

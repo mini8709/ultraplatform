@@ -1,21 +1,24 @@
 package com.tmax.ultraplatform.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tmax.ultraplatform.domain.Basket;
-import com.tmax.ultraplatform.domain.Member;
-import com.tmax.ultraplatform.domain.OrdersProduct;
-import com.tmax.ultraplatform.domain.ProductCategory;
+import com.tmax.ultraplatform.domain.*;
 import com.tmax.ultraplatform.exception.NotEnoughStockException;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@Inheritance
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Product {
 
     @Id @GeneratedValue
@@ -45,7 +48,33 @@ public abstract class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrdersProduct> ordersProductList = new ArrayList<>();
-    
+
+
+    //연관관계 메서드
+    protected void setMember(Member member){
+        this.member = member;
+        member.getProductList().add(this);
+    }
+
+    protected void setProductCategoryMapping(List<Category> categories){
+        List<ProductCategory> productCategories= categories.stream()
+                                                        .map(c->new ProductCategory(this,c))
+                                                        .collect(Collectors.toList());
+        this.productCategoryList.addAll(productCategories);
+        productCategories.stream().forEach(pc->pc.getCategory().getProductCategoryList().add(pc));
+    }
+
+    //공통 필드 세팅
+    public void setCommonFields(String name, int stockQuantity, int price, String info, String imageURL){
+        this.name = name;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+        this.info = info;
+        this.imageURL = imageURL;
+    }
+
+
+
     //비즈니스 로직
 
     /*
@@ -64,14 +93,6 @@ public abstract class Product {
 
     public void addStock(int stockQuantity){
         this.stockQuantity += stockQuantity;
-    }
-
-    public void updateProduct(Product product){
-        this.name = product.name;
-        this.stockQuantity = product.stockQuantity;
-        this.price = product.price;
-        this.info = product.info;
-        this.imageURL = product.imageURL;
     }
 
 }

@@ -19,7 +19,6 @@ public class MemberQueryService {
     public int findMoney(Long id){
 
         Member findMember = memberRepository.findOne(id);
-
         return findMember.getMoney();
     }
 }

@@ -7,11 +7,14 @@ import com.tmax.ultraplatform.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
@@ -22,37 +25,37 @@ import static java.util.stream.Collectors.*;
 public class ProductQueryService {
     private final EntityManager em;
     private final ProductRepository productRepository;
+
     //전체 목록 조회
-    public Result findProducts() {
-        return new Result(productRepository.findAll());
+    public List<Product> findProducts() {
+        return productRepository.findAll();
     }
+
     //ID로 프로덕트 조회. id 없을 시 exception발생
     public  Product findById(Long id){
         return productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such product"));
     }
+
     //카테고리 목록을 포함하여 모든 상품 조회
-    public Result findAllWithCategories(int offset, int limit){
-        List<Product> products = productRepository.findAllWithCategory(offset,limit);
-        List<ProductDto> result = products.stream().map(ProductDto::new).collect(toList());
-        return new Result(result);
+    public List<ProductDto> findAllWithCategories(Pageable pageable){
+        List<Product> products = productRepository.findAllWithCategory(pageable);
+        return products.stream().map(ProductDto::new).collect(toList());
     }
 
     // 여러 상품 id로 상품들 조회
-    public Result findByIds(List<Long> ids){
+    public List<ProductDto> findByIds(List<Long> ids){
         List<Product> products = productRepository.findByIds(ids);
-        List<ProductDto> result = products.stream().map(ProductDto::new).collect(toList());
-        return new Result(result);
+        return products.stream().map(ProductDto::new).collect(toList());
     }
     // 특정 최하위 카테고리에 해당하는 상품들 조회
-    public Result findByCategory(Long categoryId,int offset, int limit){
-        List<Product> products = productRepository.findByCategory(categoryId, offset,limit);
-        List<ProductDto> result = products.stream().map(ProductDto::new).collect(toList());
-        return new Result(result);
+    public List<ProductDto> findByCategory(Long categoryId, Pageable pageable){
+        List<Product> products = productRepository.findByCategory(categoryId, pageable);
+        return products.stream().map(ProductDto::new).collect(toList());
     }
 
     @Data
     @AllArgsConstructor
-    static class ProductDto{
+    public class ProductDto{
         private Long id;
         private Member member;
         private String name;
@@ -60,7 +63,7 @@ public class ProductQueryService {
         private int price;
         private String info;
         private String imageURL;
-        private List<String> categories;
+        private Map<Long, String> categories = new HashMap<>();
 
         public ProductDto(Product product){
             id = product.getId();
@@ -70,14 +73,10 @@ public class ProductQueryService {
             price = product.getPrice();
             info = product.getInfo();
             imageURL = product.getImageURL();
-            categories=product.getProductCategoryList().stream().map(p->p.getCategory().getName()).collect(toList());
+            product.getProductCategoryList().stream().forEach(p -> categories.put(p.getCategory().getId(), p.getCategory().getName()));
         }
     }
 
-    @Data
-    @AllArgsConstructor
-    static class Result<T>{
-        private T data;
-    }
+
 
 }
